@@ -12,7 +12,7 @@ public class AuditAwareImpl implements AuditorAware<String> {
 
     // TODO implement saving with the logged user
 
-    return Optional.of("ms-accounts");
+    return Optional.of("ms-loans");
   }
 
 }

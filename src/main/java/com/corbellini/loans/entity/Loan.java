@@ -29,9 +29,9 @@ public class Loan extends BaseEntity {
 
   private String loanType;
 
-  private Long totalLoan;
+  private int totalLoan;
 
-  private Long amountPaid;
+  private int amountPaid;
 
-  private Long outstandingAmount;
+  private int outstandingAmount;
 }

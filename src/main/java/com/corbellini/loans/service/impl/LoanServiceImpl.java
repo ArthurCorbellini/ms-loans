@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import com.corbellini.loans.dto.LoanDto;
 import com.corbellini.loans.entity.Loan;
 import com.corbellini.loans.exception.LoanAlreadyExistsException;
+import com.corbellini.loans.exception.ResourceNotFoundException;
+import com.corbellini.loans.mapper.LoanMapper;
 import com.corbellini.loans.repository.LoanRepository;
 import com.corbellini.loans.service.ILoanService;
 import lombok.AllArgsConstructor;
@@ -36,29 +38,33 @@ public class LoanServiceImpl implements ILoanService {
     newLoan.setLoanNumber(Long.toString(randomLoanNumber));
     newLoan.setMobileNumber(mobileNumber);
     newLoan.setLoanType("Default loan type");
-    newLoan.setTotalLoan(1000L);
-    newLoan.setAmountPaid(0L);
-    newLoan.setOutstandingAmount(2000L);
+    newLoan.setTotalLoan(1000);
+    newLoan.setAmountPaid(0);
+    newLoan.setOutstandingAmount(2000);
 
     return newLoan;
   }
 
   @Override
   public LoanDto fetchLoan(String mobileNumber) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'fetchLoan'");
+    Loan loan = loanRepository.findByMobileNumber(mobileNumber)
+        .orElseThrow(() -> new ResourceNotFoundException("Loan", "mobileNumber", mobileNumber));
+    return LoanMapper.mapToLoansDto(loan, new LoanDto());
   }
 
   @Override
   public boolean updateLoan(LoanDto loanDto) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'updateLoan'");
+    Loan loan = loanRepository.findByLoanNumber(loanDto.getLoanNumber()).orElseThrow(
+        () -> new ResourceNotFoundException("Loan", "LoanNumber", loanDto.getLoanNumber()));
+    loanRepository.save(LoanMapper.mapToLoans(loanDto, loan));
+    return true;
   }
 
   @Override
   public boolean deleteLoan(String mobileNumber) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'deleteLoan'");
+    Loan loan = loanRepository.findByMobileNumber(mobileNumber)
+        .orElseThrow(() -> new ResourceNotFoundException("Loan", "mobileNumber", mobileNumber));
+    loanRepository.deleteById(loan.getLoanId());
+    return true;
   }
-
 }

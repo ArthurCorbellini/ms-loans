@@ -15,6 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import com.corbellini.loans.dto.ResponseErrorDto;
 import com.corbellini.loans.exception.LoanAlreadyExistsException;
+import com.corbellini.loans.exception.ResourceNotFoundException;
 
 // @ControllerAdvice // used when the handler methods returns other objects than ResponseEntity
 @RestControllerAdvice // used when the handler methods returns only ResponseEntity object
@@ -43,20 +44,27 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     // TODO send e-mail to dev team or save the error and its information in database Audit table;
 
-    ResponseErrorDto errorResponseDTO = new ResponseErrorDto(webRequest.getDescription(false),
+    ResponseErrorDto dto = new ResponseErrorDto(webRequest.getDescription(false),
         HttpStatus.INTERNAL_SERVER_ERROR, exception.getMessage(), LocalDateTime.now());
 
-    return new ResponseEntity<>(errorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+    return new ResponseEntity<>(dto, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
   @ExceptionHandler(LoanAlreadyExistsException.class)
-  public ResponseEntity<ResponseErrorDto> handleCustomerAlreadyExistsException(
+  public ResponseEntity<ResponseErrorDto> handleLoanAlreadyExistsException(
       LoanAlreadyExistsException exception, WebRequest webRequest) {
 
-    ResponseErrorDto response = new ResponseErrorDto(webRequest.getDescription(false),
+    ResponseErrorDto dto = new ResponseErrorDto(webRequest.getDescription(false),
         HttpStatus.BAD_REQUEST, exception.getMessage(), LocalDateTime.now());
 
-    return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(dto, HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(ResourceNotFoundException.class)
+  public ResponseEntity<ResponseErrorDto> handleResourceNotFoundException(
+      ResourceNotFoundException exception, WebRequest webRequest) {
+    ResponseErrorDto dto = new ResponseErrorDto(webRequest.getDescription(false),
+        HttpStatus.NOT_FOUND, exception.getMessage(), LocalDateTime.now());
+    return new ResponseEntity<>(dto, HttpStatus.NOT_FOUND);
+  }
 }
