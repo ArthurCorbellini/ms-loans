@@ -5,7 +5,7 @@ import com.corbellini.loans.entity.Loan;
 
 public class LoanMapper {
 
-  public static LoanDto mapToLoansDto(Loan loans, LoanDto loansDto) {
+  public static LoanDto mapToLoanDto(Loan loans, LoanDto loansDto) {
     loansDto.setLoanNumber(loans.getLoanNumber());
     loansDto.setLoanType(loans.getLoanType());
     loansDto.setMobileNumber(loans.getMobileNumber());
@@ -15,7 +15,7 @@ public class LoanMapper {
     return loansDto;
   }
 
-  public static Loan mapToLoans(LoanDto loansDto, Loan loans) {
+  public static Loan mapToLoan(LoanDto loansDto, Loan loans) {
     loans.setLoanNumber(loansDto.getLoanNumber());
     loans.setLoanType(loansDto.getLoanType());
     loans.setMobileNumber(loansDto.getMobileNumber());
