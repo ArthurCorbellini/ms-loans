@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.corbellini.loans.config.EnvironmentConfig;
 import com.corbellini.loans.controller.base.BaseController;
 import com.corbellini.loans.dto.LoanDto;
 import com.corbellini.loans.dto.ResponseDto;
@@ -35,6 +36,7 @@ import lombok.AllArgsConstructor;
 public class LoanController extends BaseController {
 
   private ILoanService iLoanService;
+  private EnvironmentConfig environmentConfig;
 
   @Operation(summary = "Create Loan REST API", description = "REST API to create new loan")
   @ApiResponses({@ApiResponse(responseCode = STATUS_200, description = MESSAGE_201),
@@ -89,5 +91,15 @@ public class LoanController extends BaseController {
       return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
           .body(new ResponseDto(STATUS_417, MESSAGE_417_DELETE));
     }
+  }
+
+  @Operation(summary = "Get Contact Info",
+      description = "Contact Info details that can be reached out in case of any issues")
+  @ApiResponses({@ApiResponse(responseCode = STATUS_200, description = MESSAGE_200),
+      @ApiResponse(responseCode = STATUS_500, description = MESSAGE_500,
+          content = @Content(schema = @Schema(implementation = ResponseErrorDto.class)))})
+  @GetMapping("/contact-info")
+  public ResponseEntity<EnvironmentConfig> getContactInfo() {
+    return ResponseEntity.status(HttpStatus.OK).body(environmentConfig);
   }
 }
