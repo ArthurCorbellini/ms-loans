@@ -9,12 +9,12 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
-  <groupId>com.corbellini</groupId>
-  <artifactId>loans</artifactId>
+  <groupId>com.artcorb</groupId>
+  <artifactId>sbdb-ms-loans</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>loans</name>
+  <name>sbdb-ms-loans</name>
   <description>Microservice for Loans</description>
 
   <properties>
