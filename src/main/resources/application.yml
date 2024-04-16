@@ -53,3 +53,9 @@ info: # eureka server dashboard info
     name: "loans"
     description: "Spring Boot Demo Bank - Microservice - Loans"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      artcorb:
+        loans: DEBUG
