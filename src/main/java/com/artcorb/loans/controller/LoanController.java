@@ -65,8 +65,10 @@ public class LoanController extends BaseController {
       @RequestHeader(FilterUtil.CORRELATION_ID) String correlationId,
       @RequestParam @Pattern(regexp = "(^$|[0-9]{10})",
           message = "Mobile number must be 10 digits") String mobileNumber) {
-    logger.debug(FilterUtil.CORRELATION_ID + " found: {} ", correlationId);
-    return ResponseEntity.status(HttpStatus.OK).body(iLoanService.fetchLoan(mobileNumber));
+    logger.debug("fetchLoanDetails method start");
+    LoanDto dto = iLoanService.fetchLoan(mobileNumber);
+    logger.debug("fetchLoanDetails method end");
+    return ResponseEntity.status(HttpStatus.OK).body(dto);
   }
 
   @Operation(summary = "Update Loan REST API",
